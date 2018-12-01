@@ -1,0 +1,67 @@
+{
+  "name": "react-simple-resizer",
+  "version": "0.0.1",
+  "description": "An intuitive React component set for multi-column resizing",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc",
+    "prettier": "prettier '@(src|demo)/**/*.@(ts|tsx|html|less)' --write",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeetCode-OpenSource/react-simple-resizer.git"
+  },
+  "keywords": [
+    "react",
+    "resize",
+    "resizer"
+  ],
+  "bugs": {
+    "url": "https://github.com/LeetCode-OpenSource/react-simple-resizer/issues"
+  },
+  "homepage": "https://github.com/LeetCode-OpenSource/react-simple-resizer#readme",
+  "author": "LeetCode front-end team",
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{*.@(ts|tsx)": [
+      "prettier --write",
+      "tslint -p tsconfig.json --fix",
+      "git add"
+    ],
+    "*.@(less|html)": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.115",
+    "@types/react": "^16.4.7",
+    "@types/react-dom": "^16.0.7",
+    "husky": "^1.2.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "1.15.3",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "tslib": "^1.9.3",
+    "tslint": "^5.11.0",
+    "tslint-eslint-rules": "^5.3.1",
+    "tslint-react": "^3.6.0",
+    "tslint-sonarts": "^1.7.0",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11",
+    "rxjs": "^6.3.3"
+  },
+  "peerDependencies": {
+    "react": "^16.3.0",
+    "react-dom": "^16.4.2"
+  }
+}
