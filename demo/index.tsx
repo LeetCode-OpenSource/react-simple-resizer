@@ -8,6 +8,7 @@ import {
   MaxMinSize,
   FixedSize,
   NestingDemo,
+  CollapsibleSection,
 } from './sections';
 
 ReactDOM.render(
@@ -18,6 +19,8 @@ ReactDOM.render(
     <MaxMinSize />
     <FixedSize />
     <NestingDemo />
+    <h1>Custom Behavior</h1>
+    <CollapsibleSection />
   </React.Fragment>,
   document.getElementById('app'),
 );
