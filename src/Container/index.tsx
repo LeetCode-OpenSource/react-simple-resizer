@@ -22,7 +22,7 @@ import {
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   vertical?: boolean;
-  onResizing?: (director: Resizer) => void;
+  onResizing?: (resizer: Resizer) => void;
 }
 
 class Container extends React.PureComponent<Props> {
