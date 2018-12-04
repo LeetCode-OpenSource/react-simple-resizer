@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Subject, merge, animationFrameScheduler } from 'rxjs';
-import { filter, share, observeOn } from 'rxjs/operators';
+import { filter, share, observeOn, map } from 'rxjs/operators';
 import { omit } from 'lodash';
 
 import {
@@ -11,19 +11,21 @@ import {
 } from '../types';
 import { ResizerProvider } from '../context';
 
+import { Resizer } from './Resizer';
+import { scanBarAction } from './operators';
 import {
   calculateCoordinateOffset,
   collectSizeRelatedInfo,
   isDisabledResponsive,
   isSolid,
 } from './utils';
-import { scanBarAction } from './operators';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   vertical?: boolean;
+  onResizing?: (director: Resizer) => void;
 }
 
-export class Container extends React.PureComponent<Props> {
+class Container extends React.PureComponent<Props> {
   private readonly childrenProps: ChildProps[] = [];
 
   private readonly childrenInstance: HTMLElement[] = [];
@@ -47,6 +49,16 @@ export class Container extends React.PureComponent<Props> {
     ),
   ).pipe(
     observeOn(animationFrameScheduler),
+    map((resizeResult) => {
+      if (typeof this.props.onResizing === 'function') {
+        const resizer = new Resizer(resizeResult);
+        this.props.onResizing(resizer);
+        return resizer.getResult();
+      } else {
+        return { ...resizeResult, discard: false };
+      }
+    }),
+    filter(({ discard }) => !discard),
     share(),
   );
 
@@ -67,7 +79,7 @@ export class Container extends React.PureComponent<Props> {
   }
 
   private get renderProps() {
-    return omit(this.props, 'vertical');
+    return omit(this.props, 'vertical', 'onResizing');
   }
 
   private get contextValue(): ResizerContext {
@@ -138,3 +150,5 @@ export class Container extends React.PureComponent<Props> {
     return getResult();
   }
 }
+
+export { Container, Resizer };
