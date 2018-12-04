@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Resizer } from '../../src';
+import * as Resizer from '../../src';
 
 export const Simple = () => (
   <div>
