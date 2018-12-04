@@ -12,7 +12,7 @@ import {
 import { ResizerProvider } from '../context';
 
 import { Resizer } from './Resizer';
-import { scanBarAction } from './operators';
+import { FilterBarActionScanResult, filterBarActionScanResult, scanBarAction } from './operators';
 import {
   calculateCoordinateOffset,
   collectSizeRelatedInfo,
@@ -34,7 +34,7 @@ class Container extends React.PureComponent<Props> {
 
   private readonly sizeRelatedInfoAction$ = new Subject<SizeRelatedInfo>();
 
-  private readonly sizeRelatedInfo$ = merge<SizeRelatedInfo, SizeRelatedInfo>(
+  private readonly sizeRelatedInfo$ = merge<SizeRelatedInfo, FilterBarActionScanResult>(
     this.sizeRelatedInfoAction$,
     this.barActions$.pipe(
       scanBarAction({
@@ -42,13 +42,9 @@ class Container extends React.PureComponent<Props> {
           calculateCoordinateOffset(current, original)[this.axis],
         getSizeRelatedInfo: () => this.makeSizeInfos(),
       }),
-      filter(
-        ({ flexGrowRatio, sizeInfoArray }) =>
-          !!(flexGrowRatio && sizeInfoArray),
-      ),
+      filterBarActionScanResult(),
     ),
   ).pipe(
-    observeOn(animationFrameScheduler),
     map((resizeResult) => {
       if (typeof this.props.onResizing === 'function') {
         const resizer = new Resizer(resizeResult);
@@ -59,6 +55,7 @@ class Container extends React.PureComponent<Props> {
       }
     }),
     filter(({ discard }) => !discard),
+    observeOn(animationFrameScheduler),
     share(),
   );
 

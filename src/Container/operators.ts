@@ -1,4 +1,4 @@
-import { scan } from 'rxjs/operators';
+import { filter, scan } from 'rxjs/operators';
 
 import {
   BarAction,
@@ -17,6 +17,11 @@ export type BarActionScanResult = Pick<SizeRelatedInfo, 'flexGrowRatio'> & {
   defaultSizeInfoArray: SizeInfo[] | null;
   sizeInfoArray: SizeInfo[] | null;
 };
+
+export interface FilterBarActionScanResult extends BarActionScanResult {
+  sizeInfoArray: SizeInfo[];
+  defaultSizeInfoArray: SizeInfo[];
+}
 
 interface ScanBarActionConfig {
   getSizeRelatedInfo: () => SizeRelatedInfo;
@@ -73,4 +78,13 @@ export function scanBarAction(config: ScanBarActionConfig) {
         return DEFAULT_BAR_ACTION_SCAN_RESULT;
     }
   }, DEFAULT_BAR_ACTION_SCAN_RESULT);
+}
+
+export function filterBarActionScanResult() {
+  return filter<BarActionScanResult, FilterBarActionScanResult>(
+    (
+      scanResult: BarActionScanResult,
+    ): scanResult is FilterBarActionScanResult =>
+      !!(scanResult.flexGrowRatio && scanResult.sizeInfoArray),
+  );
 }

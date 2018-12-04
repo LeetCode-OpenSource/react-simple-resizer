@@ -1,20 +1,31 @@
 import { SizeRelatedInfo } from '../types';
+import { FilterBarActionScanResult } from './operators';
 import { getNextSizeRelatedInfo } from './utils';
+
+type ResizeResult = SizeRelatedInfo | FilterBarActionScanResult;
+
+function getBarID(indexOfBar: number): number {
+  return indexOfBar * 2 + 1;
+}
+
+function getSectionID(indexOfSection: number): number {
+  return indexOfSection * 2;
+}
 
 export class Resizer {
   private isDiscarded: boolean = false;
 
-  constructor(private resizeResult: SizeRelatedInfo) {}
+  constructor(private resizeResult: ResizeResult) {}
 
   resizeSection(
     indexOfSection: number,
     config: { toSize: number; preferMoveLeftBar?: boolean },
-  ): void {
+  ) {
     if (this.isDiscarded) {
       return;
     }
 
-    const sectionID = indexOfSection * 2;
+    const sectionID = getSectionID(indexOfSection);
     const currentSize = this.getSize(sectionID);
 
     if (currentSize >= 0 && config.toSize >= 0) {
@@ -37,7 +48,7 @@ export class Resizer {
     }
 
     this.resizeResult = getNextSizeRelatedInfo(
-      indexOfBar * 2 + 1,
+      getBarID(indexOfBar),
       config.withOffset,
       this.resizeResult.sizeInfoArray,
     );
@@ -47,8 +58,29 @@ export class Resizer {
     this.isDiscarded = true;
   }
 
+  isSectionResized(indexOfSection: number): boolean {
+    const sectionID = getSectionID(indexOfSection);
+
+    if ('defaultSizeInfoArray' in this.resizeResult) {
+      return (
+        this.getSize(sectionID) !==
+        this.resizeResult.defaultSizeInfoArray[sectionID].currentSize
+      );
+    } else {
+      return false;
+    }
+  }
+
+  isBarActivated(indexOfBar: number): boolean {
+    if ('barID' in this.resizeResult) {
+      return this.resizeResult.barID === getBarID(indexOfBar);
+    } else {
+      return false;
+    }
+  }
+
   getSectionSize(indexOfSection: number) {
-    return this.getSize(indexOfSection * 2);
+    return this.getSize(getSectionID(indexOfSection));
   }
 
   getResult(): SizeRelatedInfo & { discard: boolean } {
