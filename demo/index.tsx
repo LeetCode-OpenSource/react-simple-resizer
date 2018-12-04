@@ -9,6 +9,7 @@ import {
   FixedSize,
   NestingDemo,
   CollapsibleSection,
+  InteractiveSection,
 } from './sections';
 
 ReactDOM.render(
@@ -21,6 +22,7 @@ ReactDOM.render(
     <NestingDemo />
     <h1>Custom Behavior</h1>
     <CollapsibleSection />
+    <InteractiveSection />
   </React.Fragment>,
   document.getElementById('app'),
 );
