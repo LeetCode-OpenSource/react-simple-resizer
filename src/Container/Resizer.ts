@@ -55,6 +55,12 @@ export class Resizer {
     return { ...this.resizeResult, discard: this.isDiscarded };
   }
 
+  getTotalSize(): number {
+    return this.resizeResult.sizeInfoArray
+      .filter((sizeInfo, index) => sizeInfo && index % 2 === 0)
+      .reduce((total, { currentSize }) => total + currentSize, 0);
+  }
+
   private getSize(index: number): number | -1 {
     const sizeInfo = this.resizeResult.sizeInfoArray[index];
     return sizeInfo ? sizeInfo.currentSize : -1;
