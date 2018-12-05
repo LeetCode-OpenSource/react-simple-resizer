@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { omit } from 'lodash';
 
-import { BarActionType, ChildProps, Coordinate, ExpandInteractiveArea } from './types';
+import {
+  BarActionType,
+  ChildProps,
+  Coordinate,
+  ExpandInteractiveArea,
+} from './types';
 import { withResizerContext } from './context';
+import { omit } from './utils';
 
 type Props = React.HTMLAttributes<HTMLDivElement> &
   Pick<ChildProps, 'context' | 'size' | 'innerRef'> & {
@@ -60,8 +65,7 @@ class BarComponent extends React.PureComponent<Props> {
   }
 
   private get renderProps() {
-    return omit(
-      this.props,
+    return omit(this.props, [
       'expandInteractiveArea',
       'onStatusChanged',
       'children',
@@ -70,7 +74,7 @@ class BarComponent extends React.PureComponent<Props> {
       'innerRef',
       'context',
       'size',
-    );
+    ]);
   }
 
   private isActivated: boolean = false;

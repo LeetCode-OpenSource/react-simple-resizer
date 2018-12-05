@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Subject, merge, animationFrameScheduler } from 'rxjs';
 import { filter, share, observeOn, map } from 'rxjs/operators';
-import { omit } from 'lodash';
 
 import {
   BarAction,
@@ -9,6 +8,7 @@ import {
   ResizerContext,
   SizeRelatedInfo,
 } from '../types';
+import { omit } from '../utils';
 import { ResizerProvider } from '../context';
 
 import { Resizer } from './Resizer';
@@ -79,7 +79,7 @@ class Container extends React.PureComponent<Props> {
   }
 
   private get renderProps() {
-    return omit(this.props, 'vertical', 'beforeApplyResizer');
+    return omit(this.props, ['vertical', 'beforeApplyResizer']);
   }
 
   private get contextValue(): ResizerContext {

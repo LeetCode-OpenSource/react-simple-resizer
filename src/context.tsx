@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { noop } from 'lodash';
+import { EMPTY } from 'rxjs';
 
 import { Omit, ChildProps, ResizerContext } from './types';
-import { EMPTY } from 'rxjs';
+import { noop } from './utils';
 
 export const {
   Provider: ResizerProvider,

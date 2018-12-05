@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { omit } from 'lodash';
 import { Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
 import { ChildProps, SizeInfo } from './types';
 import { withResizerContext } from './context';
-import { isValidNumber } from './utils';
+import { isValidNumber, omit } from './utils';
 
 type Props = ChildProps & React.HTMLAttributes<HTMLDivElement>;
 
@@ -59,8 +58,7 @@ class SectionComponent extends React.PureComponent<Props> {
   }
 
   render() {
-    const props = omit(
-      this.props,
+    const props = omit(this.props, [
       'innerRef',
       // ChildProps
       'defaultSize',
@@ -69,7 +67,7 @@ class SectionComponent extends React.PureComponent<Props> {
       'size',
       'minSize',
       'maxSize',
-    );
+    ]);
 
     const { vertical } = this.props.context;
 
