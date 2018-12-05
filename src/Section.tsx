@@ -6,7 +6,10 @@ import { ChildProps, SizeInfo } from './types';
 import { withResizerContext } from './context';
 import { isValidNumber, omit } from './utils';
 
-type Props = ChildProps & React.HTMLAttributes<HTMLDivElement>;
+type Props = ChildProps &
+  React.HTMLAttributes<HTMLDivElement> & {
+    onSizeChanged?: (currentSize: number) => void;
+  };
 
 class SectionComponent extends React.PureComponent<Props> {
   private readonly defaultInnerRef = React.createRef<HTMLDivElement>();
@@ -32,6 +35,7 @@ class SectionComponent extends React.PureComponent<Props> {
         const { flexGrow, flexBasis } = this.getStyle(sizeInfo, flexGrowRatio);
         this.ref.current.style.flexBasis = `${flexBasis}px`;
         this.ref.current.style.flexGrow = `${flexGrow}`;
+        this.onSizeChanged(sizeInfo.currentSize);
       }
     }),
   );
@@ -81,6 +85,12 @@ class SectionComponent extends React.PureComponent<Props> {
     };
 
     return <div {...props} style={style} ref={this.ref} />;
+  }
+
+  private onSizeChanged(currentSize: number) {
+    if (typeof this.props.onSizeChanged === 'function') {
+      this.props.onSizeChanged(currentSize);
+    }
   }
 
   private getStyle(
