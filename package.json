@@ -32,12 +32,12 @@
     }
   },
   "lint-staged": {
-    "{*.@(ts|tsx)": [
+    "*.{ts,tsx}": [
       "prettier --write",
       "tslint -p tsconfig.json --fix",
       "git add"
     ],
-    "*.@(less|html)": [
+    "*.{less,html}": [
       "prettier --write",
       "git add"
     ]
