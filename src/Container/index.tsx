@@ -107,6 +107,14 @@ class Container extends React.PureComponent<Props> {
     );
   }
 
+  getResizer(): Resizer {
+    return new Resizer(this.makeSizeInfos());
+  }
+
+  applyResizer(resizer: Resizer): void {
+    this.sizeRelatedInfoAction$.next(resizer.getResult());
+  }
+
   private triggerBarAction = (action: BarAction) => {
     this.barActions$.next(action);
   };
