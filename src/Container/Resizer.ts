@@ -1,8 +1,8 @@
 import { SizeRelatedInfo } from '../types';
-import { FilterBarActionScanResult } from './operators';
+import { BarActionScanResult } from './operators';
 import { getNextSizeRelatedInfo } from './utils';
 
-type ResizeResult = SizeRelatedInfo | FilterBarActionScanResult;
+type ResizeResult = SizeRelatedInfo | BarActionScanResult;
 
 function getBarID(indexOfBar: number): number {
   return indexOfBar * 2 + 1;
@@ -83,7 +83,7 @@ export class Resizer {
     return this.getSize(getSectionID(indexOfSection));
   }
 
-  getResult(): SizeRelatedInfo & { discard: boolean } {
+  getResult(): SizeRelatedInfo {
     return { ...this.resizeResult, discard: this.isDiscarded };
   }
 

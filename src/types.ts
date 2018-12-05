@@ -31,6 +31,7 @@ export interface SizeInfo {
 }
 
 export interface SizeRelatedInfo {
+  discard?: boolean;
   sizeInfoArray: SizeInfo[];
   flexGrowRatio: number;
 }

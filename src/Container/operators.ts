@@ -1,4 +1,4 @@
-import { filter, scan } from 'rxjs/operators';
+import { scan } from 'rxjs/operators';
 
 import {
   BarAction,
@@ -9,17 +9,11 @@ import {
 } from '../types';
 import { DEFAULT_COORDINATE_OFFSET, getNextSizeRelatedInfo } from './utils';
 
-export type BarActionScanResult = Pick<SizeRelatedInfo, 'flexGrowRatio'> & {
+export interface BarActionScanResult extends SizeRelatedInfo {
   barID: number;
   offset: number;
   type: BarActionType;
   originalCoordinate: Coordinate;
-  defaultSizeInfoArray: SizeInfo[] | null;
-  sizeInfoArray: SizeInfo[] | null;
-};
-
-export interface FilterBarActionScanResult extends BarActionScanResult {
-  sizeInfoArray: SizeInfo[];
   defaultSizeInfoArray: SizeInfo[];
 }
 
@@ -30,11 +24,12 @@ interface ScanBarActionConfig {
 
 const DEFAULT_BAR_ACTION_SCAN_RESULT: BarActionScanResult = {
   barID: -1,
+  offset: 0,
   type: BarActionType.DEACTIVATE,
   originalCoordinate: DEFAULT_COORDINATE_OFFSET,
-  defaultSizeInfoArray: null,
-  sizeInfoArray: null,
-  offset: 0,
+  defaultSizeInfoArray: [],
+  sizeInfoArray: [],
+  discard: true,
   flexGrowRatio: 0,
 };
 
@@ -73,18 +68,10 @@ export function scanBarAction(config: ScanBarActionConfig) {
           offset,
           originalCoordinate: prevResult.originalCoordinate,
           defaultSizeInfoArray: prevResult.defaultSizeInfoArray,
+          discard: false,
         };
       case BarActionType.DEACTIVATE:
         return DEFAULT_BAR_ACTION_SCAN_RESULT;
     }
   }, DEFAULT_BAR_ACTION_SCAN_RESULT);
-}
-
-export function filterBarActionScanResult() {
-  return filter<BarActionScanResult, FilterBarActionScanResult>(
-    (
-      scanResult: BarActionScanResult,
-    ): scanResult is FilterBarActionScanResult =>
-      !!(scanResult.flexGrowRatio && scanResult.sizeInfoArray),
-  );
 }
