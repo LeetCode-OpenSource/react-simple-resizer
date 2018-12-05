@@ -23,6 +23,7 @@ import {
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   vertical?: boolean;
+  onActivate?: () => void;
   beforeApplyResizer?: (resizer: Resizer) => void;
   afterResizing?: () => void;
 }
@@ -122,11 +123,19 @@ class Container extends React.PureComponent<Props> {
   }
 
   private monitorBarStatusChanges({ type }: BarActionScanResult) {
-    if (
-      type === BarActionType.DEACTIVATE &&
-      typeof this.props.afterResizing === 'function'
-    ) {
-      this.props.afterResizing();
+    switch (type) {
+      case BarActionType.ACTIVATE:
+        if (typeof this.props.onActivate === 'function') {
+          this.props.onActivate();
+        }
+        return;
+      case BarActionType.DEACTIVATE:
+        if (typeof this.props.afterResizing === 'function') {
+          this.props.afterResizing();
+        }
+        return;
+      default:
+        return;
     }
   }
 
