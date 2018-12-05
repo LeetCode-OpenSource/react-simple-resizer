@@ -10,7 +10,7 @@ export const DefaultSize = () => (
         default is 400px.
       </Resizer.Section>
       <Resizer.Bar size={10} className="bar" />
-      <Resizer.Section className="section"/>
+      <Resizer.Section className="section" />
     </Resizer.Container>
   </div>
 );

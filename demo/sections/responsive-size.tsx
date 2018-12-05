@@ -11,11 +11,12 @@ export const ResponsiveSize = () => (
       </Resizer.Section>
       <Resizer.Bar size={10} className="bar" />
       <Resizer.Section className="section" disableResponsive>
-        this one is not responsive.<br/>
+        this one is not responsive.
+        <br />
         (resize browser to see the difference)
       </Resizer.Section>
       <Resizer.Bar size={10} className="bar" />
-      <Resizer.Section className="section"/>
+      <Resizer.Section className="section" />
     </Resizer.Container>
   </div>
 );

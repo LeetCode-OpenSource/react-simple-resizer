@@ -63,7 +63,7 @@ export function scanBarAction(config: ScanBarActionConfig) {
           ...getNextSizeRelatedInfo(
             action.barID,
             offset,
-            prevResult.defaultSizeInfoArray!,
+            prevResult.defaultSizeInfoArray,
           ),
           offset,
           originalCoordinate: prevResult.originalCoordinate,
