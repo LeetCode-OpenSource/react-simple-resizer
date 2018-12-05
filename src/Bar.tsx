@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { omit } from 'lodash';
 
-import {
-  BarActionType,
-  ChildProps,
-  Coordinate,
-  ExpandInteractiveArea,
-} from './types';
+import { BarActionType, ChildProps, Coordinate, ExpandInteractiveArea } from './types';
 import { withResizerContext } from './context';
 
 type Props = React.HTMLAttributes<HTMLDivElement> &
@@ -29,6 +24,8 @@ class BarComponent extends React.PureComponent<Props> {
   private readonly defaultInnerRef = React.createRef<HTMLDivElement>();
 
   private readonly id = this.props.context.createID(this.props);
+
+  private isValidClick: boolean = true;
 
   private get ref() {
     return this.props.innerRef || this.defaultInnerRef;
@@ -68,6 +65,7 @@ class BarComponent extends React.PureComponent<Props> {
       'expandInteractiveArea',
       'onStatusChanged',
       'children',
+      'onClick',
       // ChildProps
       'innerRef',
       'context',
@@ -112,6 +110,7 @@ class BarComponent extends React.PureComponent<Props> {
         {this.props.children}
         <div
           style={this.interactiveAreaStyle}
+          onClick={this.onClick}
           onMouseDown={this.onMouseDown}
           onTouchStart={this.onTouchStart}
         />
@@ -147,6 +146,7 @@ class BarComponent extends React.PureComponent<Props> {
       this.props.context.triggerBarAction({ type, coordinate, barID: this.id });
     }
     this.updateStatusIfNeed(type);
+    this.updateClickStatus(type);
   }
 
   private triggerMouseAction(type: BarActionType) {
@@ -163,6 +163,22 @@ class BarComponent extends React.PureComponent<Props> {
       this.triggerAction(type, { x, y });
     };
   }
+
+  private updateClickStatus(type: BarActionType) {
+    if (this.isActivated) {
+      if (type === BarActionType.ACTIVATE) {
+        this.isValidClick = true;
+      } else if (type === BarActionType.MOVE) {
+        this.isValidClick = false;
+      }
+    }
+  }
+
+  private onClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (this.isValidClick && typeof this.props.onClick === 'function') {
+      this.props.onClick(event);
+    }
+  };
 }
 
 export const Bar = withResizerContext(BarComponent);
