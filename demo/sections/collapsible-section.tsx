@@ -10,13 +10,37 @@ function onResizing(resizer: Resizer): void {
   }
 }
 
-export const CollapsibleSection = () => (
-  <div>
-    <h2>Collapsible section demo</h2>
-    <Container className="container" onResizing={onResizing}>
-      <Section className="section" />
-      <Bar size={10} className="bar" />
-      <Section className="section" />
-    </Container>
-  </div>
-);
+export class CollapsibleSection extends React.PureComponent {
+  readonly containerRef = React.createRef<Container>();
+
+  render() {
+    return (
+      <div>
+        <h2>Collapsible section demo</h2>
+        <Container
+          className="container"
+          ref={this.containerRef}
+          onResizing={onResizing}
+        >
+          <Section className="section" />
+          <Bar size={10} className="bar" onClick={this.onBarClick} />
+          <Section className="section" />
+        </Container>
+      </div>
+    );
+  }
+
+  private onBarClick = () => {
+    const container = this.containerRef.current;
+
+    if (container) {
+      const resizer = container.getResizer();
+
+      if (resizer.getSectionSize(0) === 0) {
+        resizer.resizeSection(0, { toSize: 300 });
+      }
+
+      container.applyResizer(resizer);
+    }
+  };
+}
