@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Subject, merge, animationFrameScheduler } from 'rxjs';
-import { filter, share, observeOn, map } from 'rxjs/operators';
+import { animationFrameScheduler, merge, Subject } from 'rxjs';
+import { filter, map, observeOn, share, tap } from 'rxjs/operators';
 
 import {
   BarAction,
+  BarActionType,
   ChildProps,
   ResizerContext,
   SizeRelatedInfo,
@@ -23,6 +24,7 @@ import {
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   vertical?: boolean;
   beforeApplyResizer?: (resizer: Resizer) => void;
+  afterResizing?: () => void;
 }
 
 class Container extends React.PureComponent<Props> {
@@ -45,6 +47,7 @@ class Container extends React.PureComponent<Props> {
           calculateCoordinateOffset(current, original)[this.axis],
         getSizeRelatedInfo: () => this.makeSizeInfos(),
       }),
+      tap((scanResult) => this.monitorBarStatusChanges(scanResult)),
     ),
   ).pipe(
     filter(({ discard }) => !discard),
@@ -116,6 +119,15 @@ class Container extends React.PureComponent<Props> {
 
   applyResizer(resizer: Resizer): void {
     this.sizeRelatedInfoAction$.next(resizer.getResult());
+  }
+
+  private monitorBarStatusChanges({ type }: BarActionScanResult) {
+    if (
+      type === BarActionType.DEACTIVATE &&
+      typeof this.props.afterResizing === 'function'
+    ) {
+      this.props.afterResizing();
+    }
   }
 
   private triggerBarAction = (action: BarAction) => {
