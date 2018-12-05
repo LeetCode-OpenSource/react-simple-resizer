@@ -22,7 +22,7 @@ import {
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   vertical?: boolean;
-  onResizing?: (resizer: Resizer) => void;
+  beforeApplyResizer?: (resizer: Resizer) => void;
 }
 
 class Container extends React.PureComponent<Props> {
@@ -49,9 +49,9 @@ class Container extends React.PureComponent<Props> {
   ).pipe(
     filter(({ discard }) => !discard),
     map((resizeResult) => {
-      if (typeof this.props.onResizing === 'function') {
+      if (typeof this.props.beforeApplyResizer === 'function') {
         const resizer = new Resizer(resizeResult);
-        this.props.onResizing(resizer);
+        this.props.beforeApplyResizer(resizer);
         return resizer.getResult();
       } else {
         return resizeResult;
@@ -79,7 +79,7 @@ class Container extends React.PureComponent<Props> {
   }
 
   private get renderProps() {
-    return omit(this.props, 'vertical', 'onResizing');
+    return omit(this.props, 'vertical', 'beforeApplyResizer');
   }
 
   private get contextValue(): ResizerContext {

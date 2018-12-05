@@ -20,7 +20,7 @@ function onResizing(resizer: Resizer): void {
 export const InteractiveSection = () => (
   <div>
     <h2>Interactive section demo</h2>
-    <Container className="container" onResizing={onResizing}>
+    <Container className="container" beforeApplyResizer={onResizing}>
       <Section className="section" />
       <Bar size={10} className="bar" />
       <Section className="section" />

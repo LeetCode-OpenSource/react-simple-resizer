@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Container, Section, Bar, Resizer } from '../../src';
 
-function onResizing(resizer: Resizer): void {
+function beforeApplyResizer(resizer: Resizer): void {
   if (resizer.getSectionSize(0) < 150) {
     resizer.resizeSection(0, { toSize: 0 });
   } else if (resizer.getSectionSize(0) < 300) {
@@ -20,7 +20,7 @@ export class CollapsibleSection extends React.PureComponent {
         <Container
           className="container"
           ref={this.containerRef}
-          onResizing={onResizing}
+          beforeApplyResizer={beforeApplyResizer}
         >
           <Section className="section" />
           <Bar size={10} className="bar" onClick={this.onBarClick} />
