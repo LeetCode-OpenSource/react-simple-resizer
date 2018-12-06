@@ -12,6 +12,7 @@ import { StyledBar, StyledInteractiveArea } from './Bar.styled';
 type Props = React.HTMLAttributes<HTMLDivElement> &
   Pick<ChildProps, 'context' | 'innerRef'> & {
     size: number;
+    onClick?: () => void;
     expandInteractiveArea?: ExpandInteractiveArea;
     onStatusChanged?: (isActive: boolean) => void;
   };
@@ -59,13 +60,14 @@ class BarComponent extends React.PureComponent<Props> {
   }
 
   render() {
+    const { onClick: _, ...props } = this.props;
+
     return (
-      <StyledBar {...this.props} ref={this.ref}>
+      <StyledBar {...props} ref={this.ref}>
         {this.props.children}
         <StyledInteractiveArea
           {...this.props.expandInteractiveArea}
           vertical={this.props.context.vertical}
-          onClick={this.onClick}
           onMouseDown={this.onMouseDown}
           onTouchStart={this.onTouchStart}
         />
@@ -98,6 +100,14 @@ class BarComponent extends React.PureComponent<Props> {
   private triggerAction(type: BarActionType, coordinate: Coordinate) {
     if (this.isActivated || type === BarActionType.ACTIVATE) {
       this.props.context.triggerBarAction({ type, coordinate, barID: this.id });
+    }
+
+    if (this.isActivated && type === BarActionType.DEACTIVATE) {
+      /*
+       * avoid listening onClick event on Bar. In iOS, there is a unintentional hover effect.
+       * also, mock touch event.
+       * */
+      this.onClick();
     }
     this.updateStatusIfNeed(type);
     this.updateClickStatus(type);
@@ -139,11 +149,12 @@ class BarComponent extends React.PureComponent<Props> {
     }
   }
 
-  private onClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  private onClick() {
     if (this.isValidClick && typeof this.props.onClick === 'function') {
-      this.props.onClick(event);
+      this.isValidClick = false; // avoid trigger twice on mobile.
+      this.props.onClick();
     }
-  };
+  }
 }
 
 export const Bar = withResizerContext(BarComponent);
