@@ -60,7 +60,7 @@ interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
 > Determine that whether using vertical layout or not, default is `false`.
 
 ##### onActivate
-> Triggered when any [`Bar`](#bar) activated. i.e, [onMouseDown](https://developer.mozilla.org/en/docs/Web/Events/mousedown) or [onTouchStart](https://developer.mozilla.org/en-US/docs/Web/Events/touchstart).
+> Triggered when any [`Bar`](#bar-) activated. i.e, [onMouseDown](https://developer.mozilla.org/en/docs/Web/Events/mousedown) or [onTouchStart](https://developer.mozilla.org/en-US/docs/Web/Events/touchstart).
 
 ##### beforeApplyResizer
 > Used to [customize resize behavior](#customize-resize-behavior). In this method, you __don't__ need to call [`applyResizer`](#applyresizer) to apply the resize result. Please note that you should not do any side effect on this method. If you want to do something after the resizing, see [`afterResizing`](#afterresizing) below.
@@ -137,6 +137,7 @@ interface BarProps extends HTMLAttributes<HTMLDivElement> {
   size: number;
   expandInteractiveArea?: ExpandInteractiveArea;
   onStatusChanged?: (isActive: boolean) => void;
+  onClick?: () => void;
   innerRef?: RefObject<HTMLDivElement>;
 }
 ```
@@ -148,6 +149,9 @@ interface BarProps extends HTMLAttributes<HTMLDivElement> {
 
 ##### onStatusChanged
 > Triggered when the state of the `Bar` has changed.
+
+##### onClick
+> Triggered if not moving events. The main different with original `onClick` event is that __there is no parameters__ on _this_ `onClick`. You could also use it as a touch event on mobile platform, without 300ms click delay.
 
 ##### innerRef
 > Used to get the actual DOM ref of `Bar`.
@@ -198,7 +202,7 @@ interface Resizer {
 - [Multiple Section linkage effects](https://codesandbox.io/s/r51pv3qzpm)
 
 ## Contributing
-The main purpose of this repository is to continue to evolve react-simple-resizer core, making it faster, smaller and easier to use. We are grateful to the community for contributing bugfixes and improvements.
+The main purpose of this repository is to continue to evolve react-simple-resizer, making it faster, smaller and easier to use. We are grateful to the community for contributing bugfixes and improvements.
 
 #### About Demo
 Feel free to let us know that you have create some new customized resize behavior. If you want, you could make a PR to let more people see your works. Also, if you find some behavior that you can not create, let us know too.
