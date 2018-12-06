@@ -7,23 +7,14 @@ import {
   ExpandInteractiveArea,
 } from './types';
 import { withResizerContext } from './context';
-import { omit } from './utils';
+import { StyledBar, StyledInteractiveArea } from './Bar.styled';
 
 type Props = React.HTMLAttributes<HTMLDivElement> &
-  Pick<ChildProps, 'context' | 'size' | 'innerRef'> & {
+  Pick<ChildProps, 'context' | 'innerRef'> & {
+    size: number;
     expandInteractiveArea?: ExpandInteractiveArea;
     onStatusChanged?: (isActive: boolean) => void;
   };
-
-const DEFAULT_INTERACTIVE_AREA_STYLE: React.CSSProperties = {
-  boxSizing: 'content-box',
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  width: '100%',
-  height: '100%',
-  transform: 'translate(-50%, -50%)',
-};
 
 class BarComponent extends React.PureComponent<Props> {
   private readonly defaultInnerRef = React.createRef<HTMLDivElement>();
@@ -34,47 +25,6 @@ class BarComponent extends React.PureComponent<Props> {
 
   private get ref() {
     return this.props.innerRef || this.defaultInnerRef;
-  }
-
-  private get containerStyle(): React.CSSProperties {
-    return {
-      position: 'relative',
-      flex: `0 0 ${this.props.size || 10}px`,
-      ...this.props.style,
-    };
-  }
-
-  private get interactiveAreaStyle() {
-    const { expandInteractiveArea } = this.props;
-
-    if (expandInteractiveArea) {
-      const {
-        top = 0,
-        left = 0,
-        right = 0,
-        bottom = 0,
-      } = expandInteractiveArea;
-
-      return {
-        ...DEFAULT_INTERACTIVE_AREA_STYLE,
-        padding: `${top}px ${right}px ${bottom}px ${left}px`,
-      };
-    } else {
-      return DEFAULT_INTERACTIVE_AREA_STYLE;
-    }
-  }
-
-  private get renderProps() {
-    return omit(this.props, [
-      'expandInteractiveArea',
-      'onStatusChanged',
-      'children',
-      'onClick',
-      // ChildProps
-      'innerRef',
-      'context',
-      'size',
-    ]);
   }
 
   private isActivated: boolean = false;
@@ -110,15 +60,16 @@ class BarComponent extends React.PureComponent<Props> {
 
   render() {
     return (
-      <div {...this.renderProps} ref={this.ref} style={this.containerStyle}>
+      <StyledBar {...this.props} ref={this.ref}>
         {this.props.children}
-        <div
-          style={this.interactiveAreaStyle}
+        <StyledInteractiveArea
+          {...this.props.expandInteractiveArea}
+          vertical={this.props.context.vertical}
           onClick={this.onClick}
           onMouseDown={this.onMouseDown}
           onTouchStart={this.onTouchStart}
         />
-      </div>
+      </StyledBar>
     );
   }
 

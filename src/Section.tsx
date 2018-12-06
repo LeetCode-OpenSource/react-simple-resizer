@@ -4,7 +4,8 @@ import { filter, map, tap } from 'rxjs/operators';
 
 import { ChildProps, SizeInfo } from './types';
 import { withResizerContext } from './context';
-import { isValidNumber, omit } from './utils';
+import { isValidNumber } from './utils';
+import { StyledSection } from './Section.styled';
 
 type Props = ChildProps &
   React.HTMLAttributes<HTMLDivElement> & {
@@ -32,9 +33,15 @@ class SectionComponent extends React.PureComponent<Props> {
       this.sizeInfo = sizeInfo;
       this.flexGrowRatio = flexGrowRatio;
       if (this.ref.current) {
-        const { flexGrow, flexBasis } = this.getStyle(sizeInfo, flexGrowRatio);
-        this.ref.current.style.flexBasis = `${flexBasis}px`;
+        const { flexGrow, flexShrink, flexBasis } = this.getStyle(
+          sizeInfo,
+          flexGrowRatio,
+        );
+
         this.ref.current.style.flexGrow = `${flexGrow}`;
+        this.ref.current.style.flexShrink = `${flexShrink}`;
+        this.ref.current.style.flexBasis = `${flexBasis}px`;
+
         this.onSizeChanged(sizeInfo.currentSize);
       }
     }),
@@ -42,14 +49,6 @@ class SectionComponent extends React.PureComponent<Props> {
 
   private get ref() {
     return this.props.innerRef || this.defaultInnerRef;
-  }
-
-  private get flexShrink() {
-    if (isValidNumber(this.props.size)) {
-      return 0;
-    } else {
-      return this.props.disableResponsive ? 1 : 0;
-    }
   }
 
   componentDidMount() {
@@ -62,29 +61,9 @@ class SectionComponent extends React.PureComponent<Props> {
   }
 
   render() {
-    const props = omit(this.props, [
-      'innerRef',
-      // ChildProps
-      'defaultSize',
-      'disableResponsive',
-      'context',
-      'size',
-      'minSize',
-      'maxSize',
-    ]);
-
-    const { vertical } = this.props.context;
-
-    const style: React.CSSProperties = {
-      [vertical ? 'maxHeight' : 'maxWidth']: this.props.maxSize,
-      [vertical ? 'minHeight' : 'minWidth']: this.props.minSize,
-      overflow: 'hidden',
-      flexShrink: this.flexShrink,
-      ...this.getStyle(),
-      ...this.props.style,
-    };
-
-    return <div {...props} style={style} ref={this.ref} />;
+    return (
+      <StyledSection {...this.props} {...this.getStyle()} ref={this.ref} />
+    );
   }
 
   private onSizeChanged(currentSize: number) {
@@ -93,25 +72,44 @@ class SectionComponent extends React.PureComponent<Props> {
     }
   }
 
+  private getFlexShrink() {
+    if (isValidNumber(this.props.size)) {
+      return 0;
+    } else {
+      return this.props.disableResponsive ? 1 : 0;
+    }
+  }
+
   private getStyle(
     sizeInfo: SizeInfo | undefined = this.sizeInfo,
     flexGrowRatio: number = this.flexGrowRatio,
-  ): React.CSSProperties {
+  ) {
+    const flexShrink = this.getFlexShrink();
+
     if (sizeInfo) {
       const { disableResponsive, currentSize } = sizeInfo;
 
       return {
+        flexShrink,
         flexGrow: disableResponsive ? 0 : flexGrowRatio * currentSize,
         flexBasis: disableResponsive ? currentSize : 0,
       };
     } else {
       const size = this.props.size || this.props.defaultSize;
-      const isSolid = isValidNumber(size);
 
-      return {
-        flexGrow: isSolid ? 0 : 1,
-        flexBasis: isSolid ? size : 0,
-      };
+      if (isValidNumber(size)) {
+        return {
+          flexShrink,
+          flexGrow: 0,
+          flexBasis: size,
+        };
+      } else {
+        return {
+          flexShrink,
+          flexGrow: 1,
+          flexBasis: 0,
+        };
+      }
     }
   }
 }
