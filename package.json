@@ -19,7 +19,8 @@
   "keywords": [
     "react",
     "resize",
-    "resizer"
+    "resizer",
+    "multi-column"
   ],
   "bugs": {
     "url": "https://github.com/LeetCode-OpenSource/react-simple-resizer/issues"
