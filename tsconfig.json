@@ -16,5 +16,5 @@
     "jsx": "react",
     "target": "es5"
   },
-  "include": ["src"]
+  "include": ["src", "demo"]
 }
