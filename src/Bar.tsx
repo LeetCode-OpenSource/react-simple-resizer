@@ -86,7 +86,6 @@ class BarComponent extends React.PureComponent<Props> {
   private updateStatusIfNeed(type: BarActionType) {
     /*
      * TODO
-     *   - disable user select if resizing
      *   - disable body scroll if resizing
      * */
     if (type === BarActionType.ACTIVATE) {
@@ -106,6 +105,7 @@ class BarComponent extends React.PureComponent<Props> {
 
   private triggerMouseAction(type: BarActionType) {
     return (event: React.MouseEvent | MouseEvent) => {
+      this.disableUserSelectIfResizing(event, type);
       const { clientX: x, clientY: y } = event;
       this.triggerAction(type, { x, y });
     };
@@ -113,10 +113,20 @@ class BarComponent extends React.PureComponent<Props> {
 
   private triggerTouchAction(type: BarActionType) {
     return (event: React.TouchEvent | TouchEvent) => {
+      this.disableUserSelectIfResizing(event, type);
       const touch = event.touches[0] || { clientX: 0, clientY: 0 };
       const { clientX: x, clientY: y } = touch;
       this.triggerAction(type, { x, y });
     };
+  }
+
+  private disableUserSelectIfResizing(
+    event: React.MouseEvent | MouseEvent | React.TouchEvent | TouchEvent,
+    type: BarActionType,
+  ) {
+    if (this.isActivated || type === BarActionType.ACTIVATE) {
+      event.preventDefault();
+    }
   }
 
   private updateClickStatus(type: BarActionType) {
