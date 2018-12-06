@@ -15,7 +15,7 @@ export class CollapsibleSection extends React.PureComponent {
 
   render() {
     return (
-      <div>
+      <section>
         <h2>Collapsible section demo</h2>
         <Container
           className="container"
@@ -26,7 +26,7 @@ export class CollapsibleSection extends React.PureComponent {
           <Bar size={10} className="bar" onClick={this.onBarClick} />
           <Section className="section" />
         </Container>
-      </div>
+      </section>
     );
   }
 

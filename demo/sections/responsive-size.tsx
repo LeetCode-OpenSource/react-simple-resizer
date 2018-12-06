@@ -3,7 +3,7 @@ import React from 'react';
 import * as Resizer from '../../src';
 
 export const ResponsiveSize = () => (
-  <div>
+  <section>
     <h2>responsive size demo</h2>
     <Resizer.Container className="container">
       <Resizer.Section className="section" defaultSize={400}>
@@ -18,5 +18,5 @@ export const ResponsiveSize = () => (
       <Resizer.Bar size={10} className="bar" />
       <Resizer.Section className="section" />
     </Resizer.Container>
-  </div>
+  </section>
 );

@@ -13,7 +13,8 @@ import {
 } from './sections';
 
 ReactDOM.render(
-  <React.Fragment>
+  <main>
+    <h1>Default Behavior</h1>
     <Simple />
     <DefaultSize />
     <ResponsiveSize />
@@ -23,6 +24,6 @@ ReactDOM.render(
     <h1>Custom Behavior</h1>
     <CollapsibleSection />
     <InteractiveSection />
-  </React.Fragment>,
+  </main>,
   document.getElementById('app'),
 );

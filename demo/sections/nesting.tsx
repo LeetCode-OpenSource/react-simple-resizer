@@ -3,7 +3,7 @@ import React from 'react';
 import * as Resizer from '../../src';
 
 export const NestingDemo = () => (
-  <div>
+  <section>
     <h2>Nesting demo</h2>
     <Resizer.Container className="container">
       <Resizer.Section className="section">
@@ -22,5 +22,5 @@ export const NestingDemo = () => (
         </Resizer.Container>
       </Resizer.Section>
     </Resizer.Container>
-  </div>
+  </section>
 );

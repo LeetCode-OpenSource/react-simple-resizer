@@ -3,7 +3,7 @@ import React from 'react';
 import * as Resizer from '../../src';
 
 export const FixedSize = () => (
-  <div>
+  <section>
     <h2>Fixed size demo</h2>
     <Resizer.Container className="container">
       <Resizer.Section className="section" size={500}>
@@ -33,5 +33,5 @@ export const FixedSize = () => (
         max size is 500px.
       </Resizer.Section>
     </Resizer.Container>
-  </div>
+  </section>
 );
