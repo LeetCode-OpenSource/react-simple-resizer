@@ -177,7 +177,7 @@ Used to expand interactive area of `Bar`.
 Triggered when the state of `Bar` has changed.
 
 ##### `onClick`
-Triggered if there's no "move" events. The main different between it and original `onClick` event is that __there is no parameters__ on _this_ `onClick`. You could also use it as a touch event on mobile platform, without 300ms click delay.
+Triggered if there's no "move" events. The main difference between it and original `onClick` event is that __there is no parameters__ on _this_ `onClick`. You could also use it as a touch event on mobile platform, without 300ms click delay.
 
 ##### `innerRef`
 Used to get the actual DOM ref of `Bar`.
@@ -225,7 +225,7 @@ Used to get total size of all `Section`.
 
 
 ## Contributing
-The main purpose of this repository is to continue to evolve react-simple-resizer core, making it faster, smaller and easier to use. We are grateful to the community for contributing bugfixes and improvements.
+The main purpose of this repository is to continue to evolve react-simple-resizer, making it faster, smaller and easier to use. We are grateful to the community for contributing bugfixes and improvements.
 
 #### About Demo
 Feel free to let us know that you have created some new customized resize behavior. You could create a PR to let more people see your works. Also, if you find some behaviors that you cannot create, let us know too.
