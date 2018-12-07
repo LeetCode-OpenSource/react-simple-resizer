@@ -1,1 +1,0 @@
-.container,h2{text-align:center}.container{height:50vh;margin-bottom:50px;user-select:none;font-size:16px;font-family:sans-serif;white-space:nowrap}.section{background:#d3d3d3;display:flex;align-items:center;justify-content:center}.section .container{flex:1;margin:0}.bar{background:#888;cursor:col-resize}[data-is-vertical=true] .bar{cursor:row-resize}
