@@ -8,6 +8,7 @@ import {
 } from '../types';
 import { withResizerContext } from '../context';
 import { StyledBar, StyledInteractiveArea } from './Bar.styled';
+import { disablePassive } from './disablePassive';
 
 type Props = React.HTMLAttributes<HTMLDivElement> &
   Pick<ChildProps, 'context' | 'innerRef'> & {
@@ -19,6 +20,8 @@ type Props = React.HTMLAttributes<HTMLDivElement> &
 
 class BarComponent extends React.PureComponent<Props> {
   private readonly defaultInnerRef = React.createRef<HTMLDivElement>();
+
+  private readonly interactiveAreaRef = React.createRef<HTMLDivElement>();
 
   private readonly id = this.props.context.createID(this.props);
 
@@ -41,22 +44,42 @@ class BarComponent extends React.PureComponent<Props> {
 
   componentDidMount() {
     this.props.context.populateInstance(this.id, this.ref);
-    document.addEventListener<'mousemove'>('mousemove', this.onMouseMove);
-    document.addEventListener<'mouseup'>('mouseup', this.onMouseUp);
-    document.addEventListener<'touchmove'>('touchmove', this.onTouchMove);
-    document.addEventListener<'touchend'>('touchend', this.onTouchEnd);
-    document.addEventListener<'touchcancel'>('touchcancel', this.onTouchCancel);
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('touchmove', this.onTouchMove, disablePassive);
+    document.addEventListener('touchend', this.onTouchEnd);
+    document.addEventListener('touchcancel', this.onTouchCancel);
+
+    if (this.interactiveAreaRef.current) {
+      this.interactiveAreaRef.current.addEventListener(
+        'mousedown',
+        this.onMouseDown,
+      );
+      this.interactiveAreaRef.current.addEventListener(
+        'touchstart',
+        this.onTouchStart,
+        disablePassive,
+      );
+    }
   }
 
   componentWillUnmount() {
-    document.removeEventListener<'mousemove'>('mousemove', this.onMouseMove);
-    document.removeEventListener<'mouseup'>('mouseup', this.onMouseUp);
-    document.removeEventListener<'touchmove'>('touchmove', this.onTouchMove);
-    document.removeEventListener<'touchend'>('touchend', this.onTouchEnd);
-    document.removeEventListener<'touchcancel'>(
-      'touchcancel',
-      this.onTouchCancel,
-    );
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener('touchmove', this.onTouchMove);
+    document.removeEventListener('touchend', this.onTouchEnd);
+    document.removeEventListener('touchcancel', this.onTouchCancel);
+
+    if (this.interactiveAreaRef.current) {
+      this.interactiveAreaRef.current.removeEventListener(
+        'mousedown',
+        this.onMouseDown,
+      );
+      this.interactiveAreaRef.current.removeEventListener(
+        'touchstart',
+        this.onTouchStart,
+      );
+    }
   }
 
   render() {
@@ -67,9 +90,8 @@ class BarComponent extends React.PureComponent<Props> {
         {this.props.children}
         <StyledInteractiveArea
           {...this.props.expandInteractiveArea}
+          ref={this.interactiveAreaRef}
           vertical={this.props.context.vertical}
-          onMouseDown={this.onMouseDown}
-          onTouchStart={this.onTouchStart}
         />
       </StyledBar>
     );
@@ -86,10 +108,6 @@ class BarComponent extends React.PureComponent<Props> {
   }
 
   private updateStatusIfNeed(type: BarActionType) {
-    /*
-     * TODO
-     *   - disable body scroll if resizing
-     * */
     if (type === BarActionType.ACTIVATE) {
       this.onStatusChanged(true);
     } else if (type === BarActionType.DEACTIVATE) {
@@ -102,15 +120,13 @@ class BarComponent extends React.PureComponent<Props> {
       this.props.context.triggerBarAction({ type, coordinate, barID: this.id });
     }
 
-    if (this.isActivated && type === BarActionType.DEACTIVATE) {
-      /*
-       * avoid listening onClick event on Bar. In iOS, there is a unintentional hover effect.
-       * also, mock touch event.
-       * */
-      this.onClick();
-    }
     this.updateStatusIfNeed(type);
     this.updateClickStatus(type);
+
+    if (this.isActivated && type === BarActionType.DEACTIVATE) {
+      // touch and click
+      this.onClick();
+    }
   }
 
   private triggerMouseAction(type: BarActionType) {

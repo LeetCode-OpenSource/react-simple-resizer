@@ -26,6 +26,7 @@ export const StyledInteractiveArea = styled.div<StyledInteractiveAreaProps>(
     transform: 'translate(-50%, -50%)',
     padding: `${top}px ${right}px ${bottom}px ${left}px`,
     cursor: vertical ? 'row-resize' : 'col-resize',
+    WebkitTapHighlightColor: 'transparent',
     userSelect: 'none', // disable ios long press popup
   }),
 );
