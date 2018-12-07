@@ -5,8 +5,8 @@ import {
   ChildProps,
   Coordinate,
   ExpandInteractiveArea,
-} from './types';
-import { withResizerContext } from './context';
+} from '../types';
+import { withResizerContext } from '../context';
 import { StyledBar, StyledInteractiveArea } from './Bar.styled';
 
 type Props = React.HTMLAttributes<HTMLDivElement> &

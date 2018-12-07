@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { ExpandInteractiveArea } from './types';
+import { ExpandInteractiveArea } from '../types';
 
 interface StyledBarProps {
   size?: number;

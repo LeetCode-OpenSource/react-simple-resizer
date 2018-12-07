@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { ChildProps } from './types';
+import { ChildProps } from '../types';
 
 interface StyledSectionProps extends ChildProps {
   flexGrow: number;

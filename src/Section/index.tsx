@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Subscription } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
 
-import { ChildProps, SizeInfo } from './types';
-import { withResizerContext } from './context';
-import { isValidNumber } from './utils';
+import { ChildProps, SizeInfo } from '../types';
+import { withResizerContext } from '../context';
+import { isValidNumber } from '../utils';
 import { StyledSection } from './Section.styled';
 
 type Props = ChildProps &
