@@ -120,13 +120,13 @@ class BarComponent extends React.PureComponent<Props> {
       this.props.context.triggerBarAction({ type, coordinate, barID: this.id });
     }
 
-    this.updateStatusIfNeed(type);
-    this.updateClickStatus(type);
-
     if (this.isActivated && type === BarActionType.DEACTIVATE) {
       // touch and click
       this.onClick();
     }
+
+    this.updateStatusIfNeed(type);
+    this.updateClickStatus(type);
   }
 
   private triggerMouseAction(type: BarActionType) {
