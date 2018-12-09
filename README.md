@@ -185,7 +185,9 @@ Used to get the actual DOM ref of `Bar`.
 ## Customize resize behavior
 If you want to customize behavior of resizing, then you have to know how to use `Resizer`.
 
-There is two ways to get the `Resizer`. One is [`beforeApplyResizer`](#beforeapplyresizer) defined on the __props__ of `Container`, and the other is [`getResizer`](#getresizer) defined on the __instance__ of `Container`. Beware that you need __manually__ calling [`applyResizer`](#applyresizer) every time you want to apply the effect, except in [`beforeApplyResizer`](#beforeapplyresizer).
+There is two ways to get the `Resizer`. One is [`beforeApplyResizer`](#beforeapplyresizer) defined on the __props__ of `Container`, and the other is [`getResizer`](#getresizer) defined on the __instance__ of `Container`.
+
+Beware that you need __manually__ calling [`applyResizer`](#applyresizer) every time you want to apply the effect, except in `beforeApplyResizer`. Check demo [Make Section collapsible](https://codesandbox.io/s/1vpy7kz5j3) to see how `applyResizer` is used.
 
 ```typescript
 interface Resizer {
