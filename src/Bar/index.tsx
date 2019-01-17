@@ -83,10 +83,8 @@ class BarComponent extends React.PureComponent<Props> {
   }
 
   render() {
-    const { onClick: _, ...props } = this.props;
-
     return (
-      <StyledBar {...props} ref={this.ref}>
+      <StyledBar {...this.props} ref={this.ref}>
         {this.props.children}
         <StyledInteractiveArea
           {...this.props.expandInteractiveArea}

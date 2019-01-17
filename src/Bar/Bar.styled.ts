@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 import { ExpandInteractiveArea } from '../types';
+import { ignoreProps } from '../utils';
 
 interface StyledBarProps {
   size?: number;
@@ -10,7 +11,20 @@ interface StyledInteractiveAreaProps extends ExpandInteractiveArea {
   vertical: boolean;
 }
 
-export const StyledBar = styled.div<StyledBarProps>(({ size = 10 }) => ({
+const customStyledBarProps = [
+  // ChildProps
+  'context',
+  'innerRef',
+  // BarProps
+  'size',
+  'onClick',
+  'expandInteractiveArea',
+  'onStatusChanged',
+];
+
+export const StyledBar = styled('div', {
+  shouldForwardProp: ignoreProps(customStyledBarProps),
+})<StyledBarProps>(({ size = 10 }) => ({
   position: 'relative',
   flex: `0 0 ${size}px`,
 }));

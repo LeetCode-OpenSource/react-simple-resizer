@@ -65,6 +65,7 @@
   },
   "dependencies": {
     "@emotion/core": "^10.0.4",
+    "@emotion/is-prop-valid": "^0.7.3",
     "@emotion/styled": "^10.0.4",
     "rxjs": "^6.3.3"
   },
