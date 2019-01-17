@@ -5,6 +5,7 @@ import {
   ChildProps,
   Coordinate,
   ExpandInteractiveArea,
+  Omit,
 } from '../types';
 import { withResizerContext } from '../context';
 import { StyledBar, StyledInteractiveArea } from './Bar.styled';
@@ -170,5 +171,7 @@ class BarComponent extends React.PureComponent<Props> {
     }
   }
 }
+
+export type BarProps = Omit<Props, 'context'>;
 
 export const Bar = withResizerContext(BarComponent);

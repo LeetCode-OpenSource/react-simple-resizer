@@ -164,4 +164,4 @@ class Container extends React.PureComponent<Props> {
   }
 }
 
-export { Container, Resizer };
+export { Container, Resizer, Props as ContainerProps };

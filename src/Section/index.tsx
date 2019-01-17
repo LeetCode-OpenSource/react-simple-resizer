@@ -114,4 +114,6 @@ class SectionComponent extends React.PureComponent<Props> {
   }
 }
 
+export type SectionProps = Pick<Props, 'context'>;
+
 export const Section = withResizerContext(SectionComponent);
