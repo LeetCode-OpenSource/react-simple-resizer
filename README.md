@@ -116,7 +116,7 @@ interface SectionProps extends HTMLAttributes<HTMLDivElement> {
   maxSize?: number;
   minSize?: number;
   disableResponsive?: boolean;
-  onSizeChanged?: () => void;
+  onSizeChanged?: (currentSize: number) => void;
   innerRef?: RefObject<HTMLDivElement>;
 }
 ```
