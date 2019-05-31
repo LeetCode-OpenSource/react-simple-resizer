@@ -31,11 +31,11 @@ export const StyledBar = styled('div', {
 
 export const StyledInteractiveArea = styled.div<StyledInteractiveAreaProps>(
   ({ top = 0, right = 0, bottom = 0, left = 0, vertical }) => ({
-    boxSizing: 'content-box',
-    width: '100%',
-    height: '100%',
-    padding: `${top}px ${right}px ${bottom}px ${left}px`,
-    margin: `-${top}px -${right}px -${bottom}px -${left}px`,
+    position: 'absolute',
+    top: -top,
+    left: -left,
+    right: -right,
+    bottom: -bottom,
     cursor: vertical ? 'row-resize' : 'col-resize',
     WebkitTapHighlightColor: 'transparent',
     userSelect: 'none', // disable ios long press popup
