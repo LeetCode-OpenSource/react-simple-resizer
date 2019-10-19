@@ -1,8 +1,6 @@
 import { RefObject } from 'react';
 import { Observable } from 'rxjs';
 
-export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
-
 export interface Coordinate {
   x: number;
   y: number;

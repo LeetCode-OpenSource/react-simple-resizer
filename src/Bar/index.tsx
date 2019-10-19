@@ -5,7 +5,6 @@ import {
   ChildProps,
   Coordinate,
   ExpandInteractiveArea,
-  Omit,
 } from '../types';
 import { omit } from '../utils';
 import { withResizerContext } from '../context';

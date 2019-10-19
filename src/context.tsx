@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EMPTY } from 'rxjs';
 
-import { Omit, ChildProps, ResizerContext } from './types';
+import { ChildProps, ResizerContext } from './types';
 import { noop } from './utils';
 
 export const {
