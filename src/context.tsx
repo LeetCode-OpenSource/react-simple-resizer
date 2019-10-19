@@ -20,7 +20,10 @@ export function withResizerContext<T extends ChildProps>(
 ) {
   return (props: Omit<T, 'context'>) => (
     <ResizerConsumer>
-      {(context) => <Target {...props} context={context} />}
+      {(context) => {
+        const finalProps = { ...props, context } as T;
+        return <Target {...finalProps} />;
+      }}
     </ResizerConsumer>
   );
 }
