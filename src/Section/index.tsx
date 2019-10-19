@@ -4,8 +4,8 @@ import { filter, map, tap } from 'rxjs/operators';
 
 import { ChildProps, SizeInfo } from '../types';
 import { withResizerContext } from '../context';
-import { isValidNumber } from '../utils';
-import { StyledSection } from './Section.styled';
+import { isValidNumber, omit } from '../utils';
+import { StyledSection, StyledSectionProps } from './Section.styled';
 
 type Props = ChildProps &
   React.HTMLAttributes<HTMLDivElement> & {
@@ -51,6 +51,18 @@ class SectionComponent extends React.PureComponent<Props> {
     return this.props.innerRef || this.defaultInnerRef;
   }
 
+  private get childProps(): StyledSectionProps {
+    return {
+      ...omit(this.props, [
+        'defaultSize',
+        'defaultSize',
+        'disableResponsive',
+        'innerRef',
+      ]),
+      ...this.getStyle(),
+    };
+  }
+
   componentDidMount() {
     this.subscription.add(this.resize$.subscribe());
     this.props.context.populateInstance(this.id, this.ref);
@@ -61,9 +73,7 @@ class SectionComponent extends React.PureComponent<Props> {
   }
 
   render() {
-    return (
-      <StyledSection {...this.props} {...this.getStyle()} ref={this.ref} />
-    );
+    return <StyledSection {...this.childProps} ref={this.ref} />;
   }
 
   private onSizeChanged(currentSize: number) {

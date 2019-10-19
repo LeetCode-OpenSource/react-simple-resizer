@@ -1,4 +1,4 @@
-import isPropValid from '@emotion/is-prop-valid';
+import { Omit } from './types';
 
 export function isValidNumber(num?: number): num is number {
   return typeof num === 'number' && num === num;
@@ -6,7 +6,29 @@ export function isValidNumber(num?: number): num is number {
 
 export function noop() {}
 
-export function ignoreProps(ignoreList: string[]) {
-  return (propName: string) =>
-    ignoreList.indexOf(propName) === -1 && isPropValid(propName);
+export function omit<P extends object, K extends keyof P>(
+  props: P,
+  ignoreKeys: K[],
+): Omit<P, K> {
+  type IgnoreKeyMap = Partial<Record<keyof P, true>>;
+
+  const ignoreKeyMap = ignoreKeys.reduce<IgnoreKeyMap>(
+    (map, key) => {
+      map[key] = true;
+      return map;
+    },
+    {} as IgnoreKeyMap,
+  );
+
+  return (Object.keys(props) as (keyof P)[]).reduce(
+    (newProps, key) => {
+      if (ignoreKeyMap[key]) {
+        return newProps;
+      } else {
+        newProps[key] = props[key];
+        return newProps;
+      }
+    },
+    {} as P,
+  );
 }

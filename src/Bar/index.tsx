@@ -7,8 +7,9 @@ import {
   ExpandInteractiveArea,
   Omit,
 } from '../types';
+import { omit } from '../utils';
 import { withResizerContext } from '../context';
-import { StyledBar, StyledInteractiveArea } from './Bar.styled';
+import { StyledBar, StyledInteractiveArea, StyledBarProps } from './Bar.styled';
 import { disablePassive } from './disablePassive';
 
 type Props = React.HTMLAttributes<HTMLDivElement> &
@@ -30,6 +31,10 @@ class BarComponent extends React.PureComponent<Props> {
 
   private get ref() {
     return this.props.innerRef || this.defaultInnerRef;
+  }
+
+  private get childProps(): StyledBarProps {
+    return omit(this.props, []);
   }
 
   private isActivated: boolean = false;
@@ -85,7 +90,7 @@ class BarComponent extends React.PureComponent<Props> {
 
   render() {
     return (
-      <StyledBar {...this.props} ref={this.ref}>
+      <StyledBar {...this.childProps} ref={this.ref}>
         {this.props.children}
         <StyledInteractiveArea
           {...this.props.expandInteractiveArea}

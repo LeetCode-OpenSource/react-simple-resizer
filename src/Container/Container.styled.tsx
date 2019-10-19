@@ -1,21 +1,20 @@
-import styled from '@emotion/styled';
+import * as React from 'react';
 
-import { ignoreProps } from '../utils';
-
-interface StyledContainerProps {
+export type StyledContainerProps = React.HTMLAttributes<HTMLDivElement> & {
   vertical?: boolean;
-}
+};
 
-const customStyledContainerProps = [
-  'vertical',
-  'onActivate',
-  'beforeApplyResizer',
-  'afterResizing',
-];
-
-export const StyledContainer = styled('div', {
-  shouldForwardProp: ignoreProps(customStyledContainerProps),
-})<StyledContainerProps>(({ vertical }) => ({
-  display: 'flex',
-  flexDirection: vertical ? 'column' : 'row',
-}));
+export const StyledContainer = React.forwardRef<
+  HTMLDivElement,
+  StyledContainerProps
+>(({ vertical, style, ...props }, ref) => (
+  <div
+    {...props}
+    ref={ref}
+    style={{
+      display: 'flex',
+      flexDirection: vertical ? 'column' : 'row',
+      ...style,
+    }}
+  />
+));

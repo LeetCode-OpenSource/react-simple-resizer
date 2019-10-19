@@ -9,6 +9,7 @@ import {
   ResizerContext,
   SizeRelatedInfo,
 } from '../types';
+import { omit } from '../utils';
 import { ResizerProvider } from '../context';
 
 import { Resizer } from './Resizer';
@@ -19,7 +20,7 @@ import {
   isDisabledResponsive,
   isSolid,
 } from './utils';
-import { StyledContainer } from './Container.styled';
+import { StyledContainer, StyledContainerProps } from './Container.styled';
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   vertical?: boolean;
@@ -84,6 +85,14 @@ class Container extends React.PureComponent<Props> {
     };
   }
 
+  private get containerProps(): StyledContainerProps {
+    return omit(this.props, [
+      'onActivate',
+      'beforeApplyResizer',
+      'afterResizing',
+    ]);
+  }
+
   componentDidMount() {
     this.refreshSizeInfos();
   }
@@ -91,7 +100,10 @@ class Container extends React.PureComponent<Props> {
   render() {
     return (
       <ResizerProvider value={this.contextValue}>
-        <StyledContainer {...this.props} vertical={this.props.vertical}>
+        <StyledContainer
+          {...this.containerProps}
+          vertical={this.props.vertical}
+        >
           {this.props.children}
         </StyledContainer>
       </ResizerProvider>
