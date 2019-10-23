@@ -55,9 +55,10 @@ class SectionComponent extends React.PureComponent<Props> {
     return {
       ...omit(this.props, [
         'defaultSize',
-        'defaultSize',
+        'size',
         'disableResponsive',
         'innerRef',
+        'onSizeChanged',
       ]),
       ...this.getStyle(),
     };

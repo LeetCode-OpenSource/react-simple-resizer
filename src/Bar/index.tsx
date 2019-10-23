@@ -33,7 +33,13 @@ class BarComponent extends React.PureComponent<Props> {
   }
 
   private get childProps(): StyledBarProps {
-    return omit(this.props, []);
+    return omit(this.props, [
+      'context',
+      'innerRef',
+      'onClick',
+      'expandInteractiveArea',
+      'onStatusChanged',
+    ]);
   }
 
   private isActivated: boolean = false;

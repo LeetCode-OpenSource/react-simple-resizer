@@ -100,10 +100,7 @@ class Container extends React.PureComponent<Props> {
   render() {
     return (
       <ResizerProvider value={this.contextValue}>
-        <StyledContainer
-          {...this.containerProps}
-          vertical={this.props.vertical}
-        >
+        <StyledContainer {...this.containerProps}>
           {this.props.children}
         </StyledContainer>
       </ResizerProvider>
