@@ -2,5 +2,7 @@ node_modules/
 dist/
 .idea
 .cache
+.yarn/cache/*.zip
 *.tgz
+*.gz
 .DS_Store
